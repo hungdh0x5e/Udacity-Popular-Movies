@@ -36,6 +36,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         notifyItemInserted(mMovies.size());
     }
 
+    public void clear(){
+        mMovies.clear();
+        notifyDataSetChanged();
+    }
+
     public void setListener(OnRecyclerViewItemClickListener listener){
         mListener = listener;
     }
@@ -43,7 +48,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.list_item_movie, parent, false);
-        int gridColsNumber = 3;
+        int gridColsNumber = 2;
         view.getLayoutParams().height = (int) (parent.getWidth() / gridColsNumber * Utility.POSTER_ASPECT_RATIO);
 
         return new ViewHolder(view, mListener);

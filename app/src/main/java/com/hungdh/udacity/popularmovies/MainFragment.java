@@ -8,6 +8,9 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -35,6 +38,7 @@ public class MainFragment extends Fragment implements OnRecyclerViewItemClickLis
 
     private final String SORT_BY_POPULAR = "popular";
     private final String SORT_BY_RATE = "top_rated";
+    private String mSortBy;
 
     private OnFragmentInteractionListener mListener;
 
@@ -55,7 +59,7 @@ public class MainFragment extends Fragment implements OnRecyclerViewItemClickLis
         View view = inflater.inflate(R.layout.fragment_main, container, false);
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.movie_list);
-        GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 3);
+        GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 2);
         mRecyclerView.setLayoutManager(layoutManager);
         mAdapter = new MovieAdapter(getActivity());
         mAdapter.setListener(this);
@@ -67,6 +71,7 @@ public class MainFragment extends Fragment implements OnRecyclerViewItemClickLis
     }
 
     private void fetchMovies(String sortBy) {
+        mSortBy = sortBy;
         TheMovieDBAPI service = TheMovieDB.getService();
         Call<MoviesResponse> call = service.getMovies(sortBy, BuildConfig.THE_MOVIES_API_KEY);
         call.enqueue(new Callback<MoviesResponse>() {
@@ -74,7 +79,8 @@ public class MainFragment extends Fragment implements OnRecyclerViewItemClickLis
             public void onResponse(Call<MoviesResponse> call, Response<MoviesResponse> response) {
                 Log.d(TAG, response.code() + "");
                 if (response.isSuccessful()) {
-
+                    mAdapter.clear();
+                    mMovies.clear();
                     MoviesResponse result = response.body();
                     mMovies = result.getMovies();
                     for (Movie movie : mMovies) {
@@ -127,5 +133,26 @@ public class MainFragment extends Fragment implements OnRecyclerViewItemClickLis
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_main_fragment, menu);
+        if(mSortBy.equals(SORT_BY_POPULAR)){
+            menu.findItem(R.id.sort_by_most_popular).setChecked(true);
+        }else if(mSortBy.equals(SORT_BY_RATE)){
+            menu.findItem(R.id.sort_by_top_rated).setChecked(true);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if(id == R.id.sort_by_most_popular){
+            fetchMovies(SORT_BY_POPULAR);
+        }else if(id == R.id.sort_by_top_rated){
+            fetchMovies(SORT_BY_RATE);
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

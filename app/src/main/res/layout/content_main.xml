@@ -9,7 +9,7 @@
     tools:showIn="@layout/activity_main">
 
     <fragment
-        android:id="@+id/fragment_forecast"
+        android:id="@+id/fragment_movie_list"
         android:name="com.hungdh.udacity.popularmovies.MainFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
