@@ -85,6 +85,8 @@ public class MainFragment extends Fragment implements MovieAdapter.Callback {
         if (savedInstanceState != null && savedInstanceState.containsKey(KEY_DATA)) {
             mMovies = savedInstanceState.getParcelableArrayList(KEY_DATA);
             updateAdapter();
+            progressBar.setVisibility(View.GONE);
+            txtError.setVisibility(View.GONE);
         } else {
             fetchMovies(SORT_BY_POPULAR);
         }
