@@ -3,4 +3,10 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+
+    <dimen name="app_bar_height">200dp</dimen>
+    <integer name="grid_number_cols">2</integer>
+    <dimen name="button_height">36dp</dimen>
+    <dimen name="button_horizontal_padding">8dp</dimen>
+    <dimen name="button_vertical_padding">0dp</dimen>
 </resources>

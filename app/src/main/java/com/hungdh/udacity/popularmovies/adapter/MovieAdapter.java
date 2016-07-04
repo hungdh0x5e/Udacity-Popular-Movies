@@ -1,4 +1,4 @@
-package com.hungdh.udacity.popularmovies;
+package com.hungdh.udacity.popularmovies.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -9,6 +9,8 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.hungdh.udacity.popularmovies.R;
+import com.hungdh.udacity.popularmovies.Utility;
 import com.hungdh.udacity.popularmovies.model.Movie;
 
 import java.util.ArrayList;
@@ -24,7 +26,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
     private LayoutInflater inflater;
     private final String TAG = this.getClass().getSimpleName();
 
-    private OnRecyclerViewItemClickListener mListener;
+    private Callback mListener;
+
+    public interface Callback {
+        void onItemSelected(View v, int position);
+    }
 
     public MovieAdapter(Context mContext) {
         this.mContext = mContext;
@@ -41,7 +47,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         notifyDataSetChanged();
     }
 
-    public void setListener(OnRecyclerViewItemClickListener listener){
+    public void setListener(Callback listener){
         mListener = listener;
     }
 
@@ -60,6 +66,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         Glide.with(mContext)
                 .load(movie.getPosterUrl())
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .placeholder(R.drawable.error)
+                .error(R.drawable.error)
                 .into(holder.mThumbnailView);
 
     }
@@ -71,9 +79,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView mThumbnailView;
-        OnRecyclerViewItemClickListener mListener;
+        Callback mListener;
 
-        public ViewHolder(View view, OnRecyclerViewItemClickListener listener) {
+        public ViewHolder(View view, Callback listener) {
             super(view);
 
             mThumbnailView = (ImageView) view.findViewById(R.id.thumbnail);
@@ -82,7 +90,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mListener.onClick(v, getLayoutPosition());
+                    mListener.onItemSelected(v, getLayoutPosition());
                 }
             });
         }

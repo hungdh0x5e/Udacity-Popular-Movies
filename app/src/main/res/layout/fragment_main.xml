@@ -1,8 +1,8 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.hungdh.udacity.popularmovies.MainFragment">
+    tools:context=".activity.MainFragment">
 
     <android.support.v7.widget.RecyclerView
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -12,4 +12,22 @@
         android:scrollbars="vertical"
         app:layoutManager="LinearLayoutManager" />
 
-</FrameLayout>
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        style="@style/Widget.AppCompat.ProgressBar"/>
+
+    <TextView
+        android:id="@+id/txt_error"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:padding="10dp"
+        android:textSize="26sp"
+        android:textColor="@color/grey_700"/>
+
+</RelativeLayout>

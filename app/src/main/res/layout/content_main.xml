@@ -5,12 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.hungdh.udacity.popularmovies.MainActivity"
+    tools:context=".activity.MainActivity"
     tools:showIn="@layout/activity_main">
 
     <fragment
         android:id="@+id/fragment_movie_list"
-        android:name="com.hungdh.udacity.popularmovies.MainFragment"
+        android:name="com.hungdh.udacity.popularmovies.activity.MainFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="2"

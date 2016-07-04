@@ -1,23 +1,9 @@
-/*
- * Copyright 2016.  Dmitry Malkovich
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 
 package com.hungdh.udacity.popularmovies.model;
 
 import android.content.Context;
 import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 
 import com.google.gson.annotations.SerializedName;
@@ -25,10 +11,9 @@ import com.hungdh.udacity.popularmovies.R;
 
 import java.io.Serializable;
 
-//public class Movie implements Parcelable {
-public class Movie implements Serializable {
+public class Movie implements Serializable, Parcelable {
 
-    public static final String log = Movie.class.getSimpleName();
+    public static final String TAG = Movie.class.getSimpleName();
 
     @SerializedName("id")
     private long mId;
@@ -39,7 +24,7 @@ public class Movie implements Serializable {
     @SerializedName("overview")
     private String mOverview;
     @SerializedName("vote_average")
-    private String mUserRating;
+    private float mUserRating;
     @SerializedName("release_date")
     private String mReleaseDate;
     @SerializedName("backdrop_path")
@@ -49,7 +34,7 @@ public class Movie implements Serializable {
     private Movie() {
     }
 
-    public Movie(long id, String title, String poster, String overview, String userRating,
+    public Movie(long id, String title, String poster, String overview, float userRating,
                  String releaseDate, String backdrop) {
         mId = id;
         mTitle = title;
@@ -59,6 +44,17 @@ public class Movie implements Serializable {
         mReleaseDate = releaseDate;
         mBackdrop = backdrop;
     }
+
+    protected Movie(Parcel in) {
+        mId = in.readLong();
+        mTitle = in.readString();
+        mPoster = in.readString();
+        mOverview = in.readString();
+        mUserRating = in.readFloat();
+        mReleaseDate = in.readString();
+        mBackdrop = in.readString();
+    }
+
 
     @Nullable
     public String getTitle() {
@@ -72,7 +68,7 @@ public class Movie implements Serializable {
     @Nullable
     public String getPosterUrl() {
         if (mPoster != null && !mPoster.isEmpty()) {
-            return "http://image.tmdb.org/t/p/w342" + mPoster;
+            return "http://image.tmdb.org/t/p/w185" + mPoster;
         }
         return null;
     }
@@ -86,13 +82,11 @@ public class Movie implements Serializable {
         return mReleaseDate;
     }
 
-    @Nullable
     public String getOverview() {
         return mOverview;
     }
 
-    @Nullable
-    public String getUserRating() {
+    public float getUserRating() {
         return mUserRating;
     }
 
@@ -108,23 +102,23 @@ public class Movie implements Serializable {
         return mBackdrop;
     }
 
-//    public static final Creator<Movie> CREATOR = new Creator<Movie>() {
-//        public Movie createFromParcel(Parcel source) {
-//            Movie movie = new Movie();
-//            movie.mId = source.readLong();
-//            movie.mTitle = source.readString();
-//            movie.mPoster = source.readString();
-//            movie.mOverview = source.readString();
-//            movie.mUserRating = source.readString();
-//            movie.mReleaseDate = source.readString();
-//            movie.mBackdrop = source.readString();
-//            return movie;
-//        }
-//
-//        public Movie[] newArray(int size) {
-//            return new Movie[size];
-//        }
-//    };
+    public static final Creator<Movie> CREATOR = new Creator<Movie>() {
+        public Movie createFromParcel(Parcel source) {
+            Movie movie = new Movie();
+            movie.mId = source.readLong();
+            movie.mTitle = source.readString();
+            movie.mPoster = source.readString();
+            movie.mOverview = source.readString();
+            movie.mUserRating = source.readFloat();
+            movie.mReleaseDate = source.readString();
+            movie.mBackdrop = source.readString();
+            return movie;
+        }
+
+        public Movie[] newArray(int size) {
+            return new Movie[size];
+        }
+    };
 
     public int describeContents() {
         return 0;
@@ -135,7 +129,7 @@ public class Movie implements Serializable {
         parcel.writeString(mTitle);
         parcel.writeString(mPoster);
         parcel.writeString(mOverview);
-        parcel.writeString(mUserRating);
+        parcel.writeFloat(mUserRating);
         parcel.writeString(mReleaseDate);
         parcel.writeString(mBackdrop);
     }
